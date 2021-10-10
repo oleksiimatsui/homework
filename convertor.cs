@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using Microsoft.VisualBasic.FileIO;
 
-namespace Ok
+namespace Convertor
 {
     class Program
     {
