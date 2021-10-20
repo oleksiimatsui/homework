@@ -17,7 +17,7 @@ namespace Task3
         }
         virtual public double CalcScale(double a, double b, double angle)
         {
-            return a * b * Math.Sin(angle);
+            return a * b * Math.Sin(angle * Math.PI / 180.0);
         }
     }
 
