@@ -23,7 +23,7 @@ namespace Figures
         }
         override public double GetScale()
         {
-            return a * a * Math.Sin(angle);
+            return a * a * Math.Sin(angle * Math.PI / 180.0);
         }
     }
 }
