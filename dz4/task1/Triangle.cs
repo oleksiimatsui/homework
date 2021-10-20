@@ -20,7 +20,7 @@ namespace WinFormsApp2
                 b = side_b;
                 c = side_c;
             }
-            else throw new ArgumentException(String.Format("wrong parametres"));
+            else sthrow new ArgumentException(String.Format("wrong parametres"));
 
         }
         protected bool check_sides(double side_a, double side_b, double side_c)
@@ -49,9 +49,10 @@ namespace WinFormsApp2
         public List<double> GetAngles()
         {
             List<double> angles = new List<double>();
-            double angle_c = Math.Acos((a * a + b * b - c * c) / (2 * a * b));
-            double angle_a = Math.Acos((c * c + b * b - a * a) / (2 * c * b));
-            double angle_b = Math.Acos((a * a + c * c - b * b) / (2 * a * c));
+            double angle_c = Math.Acos((a * a + b * b - c * c) / (2 * a * b)) / Math.PI * 180.0;
+            double angle_a = Math.Acos((c * c + b * b - a * a) / (2 * c * b)) / Math.PI * 180.0;
+            double angle_b = Math.Acos((a * a + c * c - b * b) / (2 * a * c)) / Math.PI * 180.0;
+
             angles.Add(angle_a);
             angles.Add(angle_b);
             angles.Add(angle_c);
