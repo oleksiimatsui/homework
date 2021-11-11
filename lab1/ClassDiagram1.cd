@@ -1,0 +1,97 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="ExpressionCalculation.ExpCalcForm">
+    <Position X="2.75" Y="2.5" Width="2.75" />
+    <TypeIdentifier>
+      <HashCode>CAHBAQwIUCCBAABAEiCFAAgCBhFIRAQAAAAAEAgAAMI=</HashCode>
+      <FileName>ExpressionCalculation.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExpressionCalculation.Cell">
+    <Position X="5.75" Y="7" Width="2" />
+    <TypeIdentifier>
+      <HashCode>QAAAAAgEgAAAAAAAAAIAQAAAAAAAJAEAAAAACAAABAA=</HashCode>
+      <FileName>Cell.cs</FileName>
+    </TypeIdentifier>
+    <ShowAsAssociation>
+      <Property Name="Parent" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="ExpressionCalculation.LabCalculatorVisitor">
+    <Position X="12.25" Y="2" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gggAgAAAEAAAACAAAAAAAAAAAAAAAAAAIAIJAAAQAAI=</HashCode>
+      <FileName>LabCalculator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExpressionCalculation.Calculator">
+    <Position X="8.25" Y="4.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAgAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Calculator.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="ExpressionCalculation.ThrowExceptionErrorListener">
+    <Position X="10.25" Y="4" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>ThrowExceptionErrorListener.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Forms.DataGridView" Collapsed="true">
+    <Position X="8.5" Y="2.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Forms.DataGridViewCell">
+    <Position X="8.5" Y="7.25" Width="1.5" />
+    <NestedTypes>
+      <Class Name="System.Windows.Forms.DataGridViewCell.DataGridViewCellAccessibleObject" Collapsed="true">
+        <TypeIdentifier />
+      </Class>
+    </NestedTypes>
+    <TypeIdentifier />
+    <ShowAsAssociation>
+      <Property Name="Tag" />
+    </ShowAsAssociation>
+  </Class>
+  <Class Name="System.Windows.Forms.Form" Collapsed="true">
+    <Position X="2.75" Y="1.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Object" Collapsed="true">
+    <Position X="6" Y="5.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Forms.DataGridViewElement" Collapsed="true">
+    <Position X="15.25" Y="5.25" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Class Name="System.Windows.Forms.Control" Collapsed="true">
+    <Position X="8.5" Y="1.25" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Antlr4.Runtime.BaseErrorListener" Collapsed="true">
+    <Position X="15.25" Y="2.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Forms.ContainerControl" Collapsed="true">
+    <Position X="2.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier />
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="System.Windows.Forms.ScrollableControl" Collapsed="true">
+    <Position X="5.75" Y="0.75" Width="1.5" />
+    <TypeIdentifier />
+  </Class>
+  <Struct Name="ExpressionCalculation.Index">
+    <Position X="6.25" Y="2.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAQACAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>Cell.cs</FileName>
+    </TypeIdentifier>
+  </Struct>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
