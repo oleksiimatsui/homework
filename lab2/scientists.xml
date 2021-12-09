@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="UTF-8" ?>
+<scientists>
+	<scientist>
+		<Name>Теофаненко Теофан Теофанович</Name>
+		<PositionChanges>
+			<PositionChange>
+				<Department>Теорії та технології програмування</Department>
+				<Position>Доцент</Position>
+				<Faculty>Комп'ютерних наук та кібернетики</Faculty>
+				<JoinTime>01.01.2000</JoinTime>
+				<TillTime>01.30.2008</TillTime>
+			</PositionChange>
+			<PositionChange>
+				<Department>Теорії та технології програмування</Department>
+				<Position>Професор</Position>
+				<Faculty>Комп'ютерних наук та кібернетики</Faculty>
+				<JoinTime>01.30.2012</JoinTime>
+				<TillTime>01.30.2020</TillTime>
+			</PositionChange>
+			<PositionChange>
+				<Department>Математичного аналізу</Department>
+				<Position>Завідувач</Position>
+				<Faculty>Механіко-математичний</Faculty>
+				<JoinTime>01.30.2020</JoinTime>
+				<TillTime>now</TillTime>
+			</PositionChange>
+		</PositionChanges>
+	</scientist>
+	<scientist>
+		<Name>Сагайдачна Василина Катеринівна</Name>
+		<PositionChanges>
+			<PositionChange>
+				<Department>Обчислювальної математики</Department>
+				<Position>Завідувач</Position>
+				<Faculty>Комп'ютерних наук та кібернетики</Faculty>
+				<JoinTime>12.03.1999</JoinTime>
+				<TillTime>01.03.2021</TillTime>
+			</PositionChange>
+			<PositionChange>
+				<Department>Обчислювальної математики</Department>
+				<Position>Аспірант</Position>
+				<Faculty>Комп'ютерних наук та кібернетики</Faculty>
+				<JoinTime>01.03.2021</JoinTime>
+				<TillTime>now</TillTime>
+			</PositionChange>
+		</PositionChanges>
+	</scientist>
+	<scientist>
+		<Name>Піддорожний Леонід Олександрович</Name>
+		<PositionChanges>
+			<PositionChange>
+				<Department>Теорії ймовірностей, статистики та актуарної математики</Department>
+				<Position>Доцент</Position>
+				<Faculty>Механіко-математичний</Faculty>
+				<JoinTime>12.03.1934</JoinTime>
+				<TillTime>12.03.1999</TillTime>
+			</PositionChange>
+			<PositionChange>
+				<Department>Обчислювальної математики</Department>
+				<Position>Завідувач</Position>
+				<Faculty>Комп'ютерних наук та кібернетики</Faculty>
+				<JoinTime>12.03.1999</JoinTime>
+				<TillTime>01.01.2000</TillTime>
+			</PositionChange>
+			<PositionChange>
+				<Department>Теорії та технології програмування</Department>
+				<Position>Доцент</Position>
+				<Faculty>Комп'ютерних наук та кібернетики</Faculty>
+				<JoinTime>01.01.2000</JoinTime>
+				<TillTime>12.03.2004</TillTime>
+			</PositionChange>
+			<PositionChange>
+				<Department>Теорії та технології програмування</Department>
+				<Position>Завідувач</Position>
+				<Faculty>Комп'ютерних наук та кібернетики</Faculty>
+				<JoinTime>12.03.2004</JoinTime>
+				<TillTime>now</TillTime>
+			</PositionChange>
+		</PositionChanges>
+	</scientist>
+</scientists>
