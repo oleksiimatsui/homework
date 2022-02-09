@@ -263,7 +263,7 @@ void update_m_with_link(int link, int field) {
 		break;
 	case 3:
 		printf("change course to : \n");
-		scanf(" %s", &s.course);
+		scanf(" %d", &s.course);
 		break;
 	case 4:
 		printf("change speciality to : \n");

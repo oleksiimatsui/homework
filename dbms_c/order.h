@@ -24,7 +24,7 @@ void del_s_by_link(link);
 
 void del_s();
 
-//void get_s_of_m(int id);
+void get_s_of_m(int id);
 
 torder get_s_by_link(int link);
 

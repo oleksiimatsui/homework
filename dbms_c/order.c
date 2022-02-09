@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <stdio.h>del_s_of_ m
 #include "student.h"
 #include "order.h"
 #include <stdlib.h>
@@ -52,13 +52,17 @@ void del_s_by_link(link) {
 	int prev = indexes_s[0].link;
 	i = 0;
 	torder s;
+	int is_break = 0;
 	while (i < count_s) {
 		prev = indexes_s[i].link;
 		s = get_s_by_link(prev);
-		if (s.next == link) break;
+		if (s.next == link) {
+			is_break = 1;
+			break;
+		}
 		i++;
 	}
-	if (i == count_s - 1) {
+	if (is_break == 0) {
 		i = 0;
 		tstudent m;
 		int linkm;
@@ -68,7 +72,7 @@ void del_s_by_link(link) {
 			if (m.order == link) break;
 			i++;
 		}
-		m.order = -1;
+		m.order = next;
 		insert_m_with_link(linkm, m);
 		return;
 	}
@@ -144,7 +148,7 @@ void print_s() {
 	for (int n = 0; n < count_s; n++) {
 		fseek(file, indexes_s[n].link, SEEK_SET);
 		fread(&o, sizeof(o), 1, file);
-		if (o.deleted == 0) {
+		if (o.deleted != 1) {
 			printf("%3d %10d %20s %10d\n", n+1, o.id, &o.date, o.payment);
 		}
 	}
@@ -303,28 +307,9 @@ void get_s() {
 	else {
 		torder s = get_s_by_link(link);
 		printf("%3s %10s %20s %10s\n", " ", "ID", "Date", "Payment");
-		printf("%3d %10d %20s %10d\n", " ", s.id, &s.date, s.payment);
+		printf("%3s %10d %20s %10d\n", " ", s.id, &s.date, s.payment);
 	}
 }
-
-//void get_s_of_m(int id) {
-//	int link = get_link_m(id);
-//	if (link == -1) printf("no student with such id\n");
-//	else {
-//		printf("%3s %10s %20s %10s\n", " ", "ID", "Date", "Payment");
-//		tstudent m = get_m_by_link(link);
-//		link = m.order;
-//		if (link == -1) printf("no orders\n");
-//		int n = 1;
-//		while (link != -1) {
-//			torder s = get_s_by_link(link);
-//			printf("%3d %10d %20s %10d\n", n, s.id, &s.date, s.payment);
-//			link = s.next;
-//			n++;
-//		}
-//		printf("\n");
-//	}
-//}
 
 
 void insert_s() {
