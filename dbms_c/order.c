@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "student.h"
 #include "order.h"
+#include <stdlib.h>
 
 int del_s_of_m(id) {
 	tstudent m;
@@ -232,7 +233,7 @@ void del_s_ind_bylink(int link) {
 
 int get_link_s(id) {
 	//searching for link of order with key id.
-	for (int i = 0; i < MAX_ORDERS; i++) {
+	for (int i = 0; i < count_s; i++) {
 		if (indexes_s[i].key == id)
 			return indexes_s[i].link;
 	}

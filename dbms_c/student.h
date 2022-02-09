@@ -1,5 +1,6 @@
 #pragma once
 #include <stdio.h>
+
 # define NAME_LEN 20
 # define GROUP_LEN 5
 # define SPEC_LEN 20

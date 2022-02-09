@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <stdlib.h>
 #include "student.h"
 #include "order.h"
 
@@ -22,22 +23,26 @@ void get_indexes_m() {
 }
 
 void save_indexes_m() {
-	file = fopen("student.ind", "w");
+	file = fopen("student.ind", "r+");
+	fseek(file, 0, SEEK_SET);
 	for (int i = 0; i < MAX_STUDENTS; i++) {
 		fwrite(&indexes_m[i], sizeof(indexes_m[i]), 1, file);
 	}
+
 }
 
 void get_trash_m() {
 	file = fopen("student.fl", "r+");
 	fseek(file, 0, SEEK_SET);
 	fread(&trash_m, sizeof(tstudent), 1, file);
+	fclose(file);
 }
 
 void save_trash_m() {
 	FILE* file = fopen("student.fl", "r+");
 	fseek(file, 0, SEEK_SET);
 	fwrite(&trash_m, sizeof(tstudent), 1, file);
+	fclose(file);
 }
 
 
@@ -166,7 +171,7 @@ void clear_m() {
 
 int get_link_m(id) {
 	//searching for link of student with key id.
-	for (int i = 0; i < MAX_STUDENTS; i++) {
+	for (int i = 0; i < count_m; i++) {
 		if (indexes_m[i].key == id)
 			return indexes_m[i].link;
 	}
@@ -222,7 +227,7 @@ void del_m() {
 	tstudent s = get_m_by_link(link);
 	s.deleted = 1;
 
-	del_s_of_m(id);
+	if(s.order != -1) del_s_of_m(id);
 
 	s.order = -1;
 	insert_m_with_link(link, s);
