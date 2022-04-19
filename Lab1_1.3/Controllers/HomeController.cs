@@ -1,8 +1,11 @@
-﻿using DiningRoomWebApplication.Models;
+﻿using ClosedXML.Excel;
+using DiningRoomWA.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 
-namespace DiningRoomWebApplication.Controllers
+namespace DiningRoomWA.Controllers
 {
     public class HomeController : Controller
     {
@@ -17,6 +20,7 @@ namespace DiningRoomWebApplication.Controllers
         {
             return View();
         }
+
         public IActionResult Privacy()
         {
             return View();
@@ -27,5 +31,7 @@ namespace DiningRoomWebApplication.Controllers
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
+
+      
     }
 }

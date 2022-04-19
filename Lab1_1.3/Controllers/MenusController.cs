@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DiningRoomWebApplication;
+using DiningRoomWA;
+using ClosedXML.Excel;
 
-namespace DiningRoomWebApplication.Controllers
+
+namespace DiningRoomWA.Controllers
 {
     public class MenusController : Controller
     {
@@ -32,6 +34,7 @@ namespace DiningRoomWebApplication.Controllers
             {
                 return NotFound();
             }
+
             var menu = await _context.Menus
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (menu == null)
@@ -40,7 +43,7 @@ namespace DiningRoomWebApplication.Controllers
             }
 
             //return View(menu);
-            return RedirectToAction("Index", "Dishes", new { id = menu.Id, name = menu.Name });
+            return RedirectToAction("Index", "MenuIncludes", new { Id = id});
         }
 
         // GET: Menus/Create
@@ -58,12 +61,24 @@ namespace DiningRoomWebApplication.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(menu);
-                RedirectToAction();
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (IsUnique(menu.Name))
+                {
+                    _context.Add(menu);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "MenuIncludes", new { Id = menu.Id });
+                }
+
             }
             return View(menu);
+        }
+
+        bool IsUnique(string name)
+        {
+            var q = (from menu in _context.Menus
+                    where menu.Name == name
+                    select menu).ToList();
+            if(q.Count == 0) { return true; }
+            return false;
         }
 
         // GET: Menus/Edit/5
@@ -144,6 +159,7 @@ namespace DiningRoomWebApplication.Controllers
             var menuincludes = from mi in _context.MenuIncludes
                                where mi.MenuId == id
                                select mi;
+
             _context.Menus.Remove(menu);
             _context.MenuIncludes.RemoveRange(menuincludes);
             await _context.SaveChangesAsync();
@@ -154,5 +170,8 @@ namespace DiningRoomWebApplication.Controllers
         {
             return _context.Menus.Any(e => e.Id == id);
         }
+
+        
+
     }
 }

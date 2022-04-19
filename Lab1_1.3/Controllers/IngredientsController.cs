@@ -1,13 +1,16 @@
-﻿using System;
+﻿#nullable disable
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DiningRoomWebApplication;
+using DiningRoomWA;
+using ClosedXML.Excel;
+using Microsoft.AspNetCore.Authorization;
 
-namespace DiningRoomWebApplication.Controllers
+namespace DiningRoomWA.Controllers
 {
     public class IngredientsController : Controller
     {
@@ -32,14 +35,17 @@ namespace DiningRoomWebApplication.Controllers
                 return NotFound();
             }
 
-            var ingredient = await _context.Ingredients
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (ingredient == null)
-            {
-                return NotFound();
-            }
+            ViewBag.Ingredient = (from Ingredients in _context.Ingredients
+                                  where Ingredients.Id == id
+                                  select Ingredients).FirstOrDefault();
 
-            return View(ingredient);
+            ViewBag.Dishes = from dishes in _context.Dishes
+                             join dishincludes in _context.DishIncludes
+                             on dishes.Id equals dishincludes.DishId
+                             where dishincludes.IngredientId == id
+                             select dishes;
+
+            return View();
         }
 
         // GET: Ingredients/Create
@@ -139,6 +145,13 @@ namespace DiningRoomWebApplication.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var ingredient = await _context.Ingredients.FindAsync(id);
+
+            var dishincludes = from dishinc in _context.DishIncludes
+                               where dishinc.IngredientId == id
+                               select dishinc;
+
+            _context.DishIncludes.RemoveRange(dishincludes);
+
             _context.Ingredients.Remove(ingredient);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
@@ -148,5 +161,25 @@ namespace DiningRoomWebApplication.Controllers
         {
             return _context.Ingredients.Any(e => e.Id == id);
         }
+        //public async Task<IActionResult> Import(IXLWorksheet sheet)
+        //{
+        //    foreach (IXLRow row in sheet.RowsUsed().Skip(1))
+        //    {
+        //        try{
+        //            Ingredient ingredient = new Ingredient();
+        //            ingredient.Name = row.Cell(2).Value.ToString();
+        //            _context.Ingredients.Add(ingredient);
+        //            return RedirectToAction(nameof(Index));
+        //        }
+        //        catch (Exception e)
+        //        {
+        //            //logging самостійно :)
+        //            return RedirectToAction(nameof(Index));
+        //        }
+        //        _context.SaveChanges();
+        //        return RedirectToAction(nameof(Index));
+
+        //    }
+        //}
     }
 }

@@ -6,9 +6,10 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DiningRoomWebApplication;
+using DiningRoomWA;
+using System.Dynamic;
 
-namespace DiningRoomWebApplication.Controllers
+namespace DiningRoomWA.Controllers
 {
     public class DishesController : Controller
     {
@@ -20,52 +21,35 @@ namespace DiningRoomWebApplication.Controllers
         }
 
         // GET: Dishes
-        public async Task<IActionResult> Index(int id, string? name)
+        public async Task<IActionResult> Index()
         {
-            if (id == null) return RedirectToAction("Index");
-            //знаходження страв за меню
-            ViewBag.MenuId = id;
-
-            ViewBag.MenuName = _context.Menus.Where(m => m.Id == id).FirstOrDefault().Name;
-
-            var menuinclude = _context.MenuIncludes.Where(x => x.MenuId == id);
-            IQueryable<Dish> dish = null;
-            if (menuinclude != null)
-            {
-                dish = (from dishes in _context.Dishes
-                       join menuincludes in menuinclude on dishes.Id equals menuincludes.DishId
-                       select dishes).Include(d => d.Type); 
-            }
-            return View(await dish.ToListAsync());
+            var dishes =  (from d in _context.Dishes select d).ToList();
+            return View(dishes);
         }
 
         // GET: Dishes/Details/5
-        public async Task<IActionResult> Details(int? id, int menuId)
+        public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var dish = await _context.Dishes
-                .Include(d => d.Type)
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var dish = await _context.Dishes.FirstOrDefaultAsync(m => m.Id == id);
+
             if (dish == null)
             {
                 return NotFound();
             }
-            ViewBag.MenuId = menuId;
-            ViewBag.MenuName = _context.Menus.Where(m => m.Id == menuId).FirstOrDefault().Name;
-            
-            return View(dish);
+
+            //return View(dish);
+            return RedirectToAction("Index", "DishIncludes", new { Id = id });
         }
 
         // GET: Dishes/Create
-        public IActionResult Create(int menuId)
+        public IActionResult Create()
         {
             ViewData["TypeId"] = new SelectList(_context.Types, "Id", "Name");
-            ViewBag.MenuId = menuId;
-            ViewBag.MenuName = _context.Menus.Where(m => m.Id == menuId).FirstOrDefault().Name;
             return View();
         }
 
@@ -74,50 +58,28 @@ namespace DiningRoomWebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(int menuId, [Bind("Id,Name,Calories,Notes,TypeId")] Dish dish)
+        public async Task<IActionResult> Create([Bind("Id,Name,Calories,Notes,TypeId")] Dish dish)
         {
-            if (ModelState.IsValid)
+            if (IsUnique(dish.Name))
             {
                 _context.Add(dish);
                 await _context.SaveChangesAsync();
-                _context.MenuIncludes.Add(new MenuInclude { DishId = dish.Id, MenuId = menuId });
-                await _context.SaveChangesAsync();
+                return RedirectToAction("Index", "DishIncludes", new { Id = dish.Id });
             }
-            //ViewData["TypeId"] = new SelectList(_context.Types, "Id", "Id", dish.TypeId);
-            //return View(dish);
-            return RedirectToAction("Index", "Dishes", new { id = menuId, name = _context.Menus.Where(c => c.Id == menuId).FirstOrDefault().Name });
+            return View(dish);
         }
 
-        // GET: Dishes/Add
-        public IActionResult Add(int menuId)
+        bool IsUnique(string name)
         {
-           
-            ViewData["TypeId"] = new SelectList(_context.Types, "Id", "Name");
-            ViewData["DishId"] = new SelectList(_context.Dishes, "Id", "Name");
-            ViewBag.MenuId = menuId;
-            ViewBag.MenuName = _context.Menus.Where(m => m.Id == menuId).FirstOrDefault().Name;
-            return View();
-        }
-
-        // POST: Dishes/Add
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Add(int menuId, [Bind("Id")] Dish dish)
-        {
-            if (ModelState.IsValid)
-            {
-                _context.MenuIncludes.Add(new MenuInclude { DishId = dish.Id, MenuId = menuId });
-                await _context.SaveChangesAsync();
-            }
-            //ViewData["TypeId"] = new SelectList(_context.Types, "Id", "Id", dish.TypeId);
-            //return View(dish);
-            return RedirectToAction("Index", "Dishes", new { id = menuId, name = _context.Menus.Where(c => c.Id == menuId).FirstOrDefault().Name });
+            var q = (from menu in _context.Dishes
+                     where menu.Name == name
+                     select menu).ToList();
+            if (q.Count == 0) { return true; }
+            return false;
         }
 
         // GET: Dishes/Edit/5
-        public async Task<IActionResult> Edit(int? id, int menuId)
+        public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
             {
@@ -129,10 +91,7 @@ namespace DiningRoomWebApplication.Controllers
             {
                 return NotFound();
             }
-            ViewData["TypeId"] = new SelectList(_context.Types, "Id", "Name", dish.TypeId);
-            
-            ViewBag.MenuName = _context.Menus.Where(m => m.Id == menuId).FirstOrDefault().Name;
-            ViewBag.MenuId = menuId;
+            ViewData["TypeId"] = new SelectList(_context.Types, "Id", "Id", dish.TypeId);
             return View(dish);
         }
 
@@ -141,15 +100,13 @@ namespace DiningRoomWebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, int menuId, [Bind("Id,Name,Calories,Notes,TypeId")] Dish dish)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Calories,Notes,TypeId")] Dish dish)
         {
             if (id != dish.Id)
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
-            {
                 try
                 {
                     _context.Update(dish);
@@ -166,15 +123,14 @@ namespace DiningRoomWebApplication.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Index", "Dishes", new { id = menuId, name = _context.Menus.Where(c => c.Id == menuId).FirstOrDefault().Name });
-            }
-            ViewData["TypeId"] = new SelectList(_context.Types, "Id", "Name", dish.TypeId);
-            return RedirectToAction("Index", "Dishes", new { id = menuId, name = _context.Menus.Where(c => c.Id == menuId).FirstOrDefault().Name });
+                return RedirectToAction(nameof(Index));
 
+            ViewData["TypeId"] = new SelectList(_context.Types, "Id", "Name", dish.TypeId);
+            return View(dish);
         }
 
         // GET: Dishes/Delete/5
-        public async Task<IActionResult> Delete(int? id, int menuId)
+        public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
             {
@@ -188,23 +144,28 @@ namespace DiningRoomWebApplication.Controllers
             {
                 return NotFound();
             }
-            ViewBag.MenuId = menuId;
-            ViewBag.MenuName = _context.Menus.Where(m => m.Id == menuId).FirstOrDefault().Name;
+
             return View(dish);
         }
 
         // POST: Dishes/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int menuId, [Bind("Id")] Dish dish)
+        public async Task<IActionResult> DeleteConfirmed(int id)
         {
-           // var dish = await _context.Dishes.FindAsync(id);
-            var menuinclude = _context.MenuIncludes.Where(x => x.DishId == dish.Id && x.MenuId == menuId).FirstOrDefault<MenuInclude>();
-           // _context.Dishes.Remove(dish);
-            _context.MenuIncludes.Remove(menuinclude);
+            var dish = await _context.Dishes.FindAsync(id);
+            var menuincludes = from menuinc in _context.MenuIncludes
+                               where menuinc.DishId == id
+                               select menuinc;
+            var dishincludes = from dishinc in _context.DishIncludes
+                               where dishinc.DishId == id
+                               select dishinc;
+
+            _context.DishIncludes.RemoveRange(dishincludes);
+            _context.MenuIncludes.RemoveRange(menuincludes);
+            _context.Dishes.Remove(dish);
             await _context.SaveChangesAsync();
-            //return RedirectToAction(nameof(Index));
-            return RedirectToAction("Index", "Dishes", new { id = menuId, name = _context.Menus.Where(c => c.Id == menuId).FirstOrDefault().Name });
+            return RedirectToAction(nameof(Index));
         }
 
         private bool DishExists(int id)

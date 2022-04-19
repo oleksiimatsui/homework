@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿#nullable disable
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
-using DiningRoomWebApplication;
 
-namespace DiningRoomWebApplication.Controllers
+namespace DiningRoomWA.Controllers
 {
+   // [Authorize(Roles = "Admin, User")]
     public class TypesController : Controller
     {
         private readonly DiningRoomDBContext _context;
@@ -32,14 +29,11 @@ namespace DiningRoomWebApplication.Controllers
                 return NotFound();
             }
 
-            var @type = await _context.Types
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (@type == null)
-            {
-                return NotFound();
-            }
+            ViewBag.Type = (from Types in _context.Types
+                           where Types.Id == id
+                           select Types).Include(x => x.Dishes).FirstOrDefault();
 
-            return View(@type);
+            return View();
         }
 
         // GET: Types/Create
@@ -53,15 +47,27 @@ namespace DiningRoomWebApplication.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Name")] Type @type)
+        public async Task<IActionResult> Create([Bind("Id,Name")] Type type)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(@type);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+                if (IsUnique(type.Name))
+                {
+                    _context.Add(type);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
             }
-            return View(@type);
+            return View(type);
+        }
+
+        bool IsUnique(string name)
+        {
+            var q = (from menu in _context.Types
+                     where menu.Name == name
+                     select menu).ToList();
+            if (q.Count == 0) { return true; }
+            return false;
         }
 
         // GET: Types/Edit/5
@@ -138,16 +144,24 @@ namespace DiningRoomWebApplication.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var @type = await _context.Types.FindAsync(id);
-            var dishes = from Dishes in _context.Dishes
-                         where Dishes.TypeId == id
-                         select Dishes;
-            var menuincludes = from menuInclude in _context.MenuIncludes
-                               join dish in dishes on menuInclude.DishId equals dish.Id
-                               select menuInclude;
-            _context.Types.Remove(@type);
-            _context.Dishes.RemoveRange(dishes);
+            var type = await _context.Types.FindAsync(id);
+            var dishes = from dish in _context.Dishes
+                         where dish.TypeId == id
+                         select dish;
+            var menuincludes = from menuinc in _context.MenuIncludes
+                               join dish in dishes
+                               on menuinc.DishId equals dish.Id
+                               select menuinc;
+
+            var dishincludes = from dishinc in _context.DishIncludes
+                               join dish in dishes
+                               on dishinc.DishId equals dish.Id
+                               select dishinc;
+
+            _context.DishIncludes.RemoveRange(dishincludes);
             _context.MenuIncludes.RemoveRange(menuincludes);
+            _context.Dishes.RemoveRange(dishes);
+            _context.Types.Remove(type);
             await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
