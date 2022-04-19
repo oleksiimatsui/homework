@@ -1,35 +1,51 @@
-﻿@model IEnumerable<DiningRoomWebApplication.Type>
+﻿@model IEnumerable<DiningRoomWA.Type>
 
 @{
-    ViewData["Title"] = "Типи продуктів";
+    ViewData["Title"] = "Index";
 }
 
-<h1>Типи продуктів</h1>
+<h1>Типи</h1>
 
 <p>
+     @if (User.IsInRole("admin")) {
     <a asp-action="Create">Новий тип</a>
+     }
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
+    <form asp-action="Details" asp-route-id="@item.Id">
+            <button class="normal">
                 @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Розгорнути</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
-            </td>
-        </tr>
+                <div style="float:right; z-index: 1">
+                     @if (User.IsInRole("admin")) {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> 
+                    <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
+                     }
+                </div>
+            </button>
+    </form>     
 }
-    </tbody>
-</table>
+
+<div class="container">
+    <div id="chart1"></div>
+</div>
+@section scripts{
+    <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script>
+    google.charts.load('current', { 'packages': ['corechart'] });
+    google.charts.setOnLoadCallback(drawChart);
+
+        function drawChart() {
+
+            $.get('/api/ChartType/JsonData', function(JsonData) {
+                data = google.visualization.arrayToDataTable(JsonData, false);
+                var option = {
+                    title: "Кількості страв кожного типу",
+                    width: 500,
+                    height: 400
+                };
+                chart = new google.visualization.ColumnChart(document.getElementById('chart1'));
+                chart.draw(data, option);
+            })
+        }
+    </script>
+}

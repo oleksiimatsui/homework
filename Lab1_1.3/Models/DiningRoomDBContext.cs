@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata;
 
-namespace DiningRoomWebApplication
+namespace DiningRoomWA
 {
     public partial class DiningRoomDBContext : DbContext
     {
@@ -19,8 +19,8 @@ namespace DiningRoomWebApplication
         public virtual DbSet<Dish> Dishes { get; set; } = null!;
         public virtual DbSet<DishInclude> DishIncludes { get; set; } = null!;
         public virtual DbSet<Ingredient> Ingredients { get; set; } = null!;
-        public virtual DbSet<MenuInclude> MenuIncludes { get; set; } = null!;
         public virtual DbSet<Menu> Menus { get; set; } = null!;
+        public virtual DbSet<MenuInclude> MenuIncludes { get; set; } = null!;
         public virtual DbSet<Type> Types { get; set; } = null!;
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
@@ -28,7 +28,7 @@ namespace DiningRoomWebApplication
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server= DESKTOP-9KIPNP7\\SQLEXPRESS;\nDatabase=DiningRoomDB; Trusted_Connection=True;");
+                optionsBuilder.UseSqlServer("Server= DESKTOP-9KIPNP7\\SQLEXPRESS; Database=DiningRoomDB; Trusted_Connection=True;");
             }
         }
 
@@ -64,6 +64,11 @@ namespace DiningRoomWebApplication
                 entity.Property(e => e.Name).HasMaxLength(10);
             });
 
+            modelBuilder.Entity<Menu>(entity =>
+            {
+                entity.Property(e => e.Name).HasMaxLength(10);
+            });
+
             modelBuilder.Entity<MenuInclude>(entity =>
             {
                 entity.HasOne(d => d.Dish)
@@ -77,11 +82,6 @@ namespace DiningRoomWebApplication
                     .HasForeignKey(d => d.MenuId)
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_MenuIncludes_Menues");
-            });
-
-            modelBuilder.Entity<Menu>(entity =>
-            {
-                entity.Property(e => e.Name).HasMaxLength(10);
             });
 
             modelBuilder.Entity<Type>(entity =>

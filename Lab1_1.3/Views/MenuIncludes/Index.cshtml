@@ -1,0 +1,52 @@
+﻿@model IEnumerable<DiningRoomWA.MenuInclude>
+
+@{
+    ViewData["Title"] = @ViewBag.MenuName;
+}
+
+<h1>@ViewBag.MenuName</h1>
+
+<p>
+     @if (User.IsInRole("admin")) {
+        <a asp-action="Create" asp-route-id="@ViewBag.MenuId">Додати страву</a>
+     }
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Dish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Cost)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                <a asp-action="Details" asp-route-id="@item.Id">@Html.DisplayFor(modelItem => item.Dish.Name)</a>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cost)
+            </td>
+            <td>
+                    @if (User.IsInRole("admin"))
+                    {
+                        @Html.ActionLink("Редагувати", "Edit", new {MenuId = @ViewBag.MenuId, Id =  @item.Id, menuName = @ViewBag.MenuName})
+                        <span>|</span>
+                        @Html.ActionLink("Видалити", "Delete", new {MenuId = @ViewBag.MenuId, Id =  @item.Id, menuName = @ViewBag.MenuName})
+                    }
+                </td>
+        </tr>
+}
+    </tbody>
+</table>
+<br />
+<br />
+<br />
+<div>
+    <a asp-action="Export" asp-route-menuId="@ViewBag.MenuId" > Завантажити меню</a>
+</div>

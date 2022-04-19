@@ -1,56 +1,29 @@
-﻿@model IEnumerable<DiningRoomWebApplication.Dish>
+﻿@model IEnumerable<DiningRoomWA.Dish>
 
 @{
-    ViewData["Title"] = "меню " + @ViewBag.MenuName;
+    ViewData["Title"] = "Index";
 }
 
-<h1>Меню @ViewBag.MenuName</h1>
+<h1>Страви</h1>
 
 <p>
-@*    <a asp-action="Create" asp-route-id="@ViewBag.menuid">додати нову страву в меню</a>*@
-    @Html.ActionLink("Створити страву і додати", "Create", new {menuId = @ViewBag.MenuId, menuName = @ViewBag.MenuName})<br>
-    @Html.ActionLink("Додати існуючи страву", "Add", new {menuId = @ViewBag.MenuId, menuName = @ViewBag.MenuName})
+    @if(User.IsInRole("admin"))
+        {
+             <a asp-action="Create">Нова страва</a>
+        }
 </p>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)1
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Calories)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notes)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Type)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
 @foreach (var item in Model) {
-        <tr>
-            <td>
+    <form asp-action="Details" asp-route-id="@item.Id">
+            <button class="normal">
                 @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Calories)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Notes)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Type.Name)
-            </td>
-            <td>
-                @Html.ActionLink("Редагувати", "Edit", new {MenuId = @ViewBag.MenuId, Id =  @item.Id, menuName = @ViewBag.MenuName})|
-                @Html.ActionLink("Розгорнути", "Details", new {MenuId = @ViewBag.MenuId, Id =  @item.Id, menuName = @ViewBag.MenuName})|
-                @Html.ActionLink("Видалити", "Delete", new {MenuId = @ViewBag.MenuId, Id =  @item.Id, menuName = @ViewBag.MenuName})
-            </td>
-        </tr>
+                @if(User.IsInRole("admin")){
+                    <div style="float:right; z-index: 1">
+                        <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> <span>|</span>
+                        <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
+                    </div>
+                }
+            </button>
+    </form>     
 }
-    </tbody>
-</table>
+
+

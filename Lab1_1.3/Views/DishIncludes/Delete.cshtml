@@ -1,0 +1,33 @@
+﻿@model DiningRoomWA.DishInclude
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Видалити інгредієнт із страви @Model.Dish.Name?</h1>
+
+<h3>Подумайте ще раз: вилучаємо чи ні?</h3>
+<div>
+    <hr />
+    <dl class="row">
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Ingredient)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Ingredient.Name)
+        </dd>
+
+        <dt class = "col-sm-2">
+            @Html.DisplayNameFor(model => model.Mass)
+        </dt>
+        <dd class = "col-sm-10">
+            @Html.DisplayFor(model => model.Mass)
+        </dd>
+    </dl>
+    
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Видалити" class="btn btn-danger" /> |
+        <a asp-action="Index" asp-route-id="@Model.DishId">повернутись назад до страви</a>
+    </form>
+</div>

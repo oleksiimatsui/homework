@@ -1,24 +1,26 @@
-﻿@model DiningRoomWebApplication.Ingredient
+﻿@model DiningRoomWA.Ingredient
 
 @{
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<h1>@ViewBag.Ingredient.Name</h1>
+<h4>Входить у наступні страви:</h4>
 
 <div>
-    <h4>Ingredient</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-    </dl>
+    @foreach (var item in @ViewBag.Dishes) {
+        <form asp-controller="Dishes" asp-action="Details" asp-route-id="@item.Id">
+            <button class="normal">
+                @item.Name
+                <div style="float:right; z-index: 1">
+                    <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Видалити страву звідусіль</a>
+                </div>
+            </button>
+        </form>     
+    }
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model?.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@ViewBag.Ingredient.Id">Редагувати назву</a> |
+    <a asp-action="Index">Назад до інгредієнтів</a>
 </div>

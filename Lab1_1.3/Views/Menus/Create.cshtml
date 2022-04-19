@@ -1,16 +1,16 @@
-﻿@model DiningRoomWebApplication.Menu
+﻿@model DiningRoomWA.Menu
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Створення нового меню";
 }
 
-<h1>Create</h1>
+<h1>Створення нового меню</h1>
 
-<h4>Menu</h4>
+<h4>Так, саме меню</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Create">
+        <form asp-action="Create"> 
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Name" class="control-label"></label>
@@ -25,7 +25,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a method="post" asp-action="Index">Назад до меню</a>
 </div>
 
 @section Scripts {

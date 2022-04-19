@@ -1,4 +1,4 @@
-namespace DiningRoomWebApplication.Models
+namespace DiningRoomWA.Models
 {
     public class ErrorViewModel
     {

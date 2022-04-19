@@ -1,4 +1,4 @@
-﻿@model IEnumerable<DiningRoomWebApplication.Menu>
+﻿@model IEnumerable<DiningRoomWA.Menu>
 
 @{
     ViewData["Title"] = "Наші Меню";
@@ -7,29 +7,26 @@
 <h1>Наші Меню</h1>
 
 <p>
+     @if (User.IsInRole("admin")) {
     <a asp-action="Create">Нове меню</a>
+     }
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Name)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
+
 @foreach (var item in Model) {
-        <tr>
-            <td>
+    <form asp-action="Details" asp-route-id="@item.Id">
+            <button class="normal">
+
                 @Html.DisplayFor(modelItem => item.Name)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Розгорнути</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
-            </td>
-        </tr>
+                <div style="float:right; z-index: 1">
+                     @if (User.IsInRole("admin")) {
+                    <a asp-action="Edit" asp-route-id="@item.Id">Редагувати</a> <span>|</span>
+                    <a asp-action="Delete" asp-route-id="@item.Id">Видалити</a>
+                     }
+                </div>
+
+            </button>
+    </form>     
 }
-    </tbody>
-</table>
+
+
+

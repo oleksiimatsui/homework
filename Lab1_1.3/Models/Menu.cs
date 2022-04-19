@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 
-namespace DiningRoomWebApplication
+namespace DiningRoomWA
 {
     public partial class Menu
     {
@@ -12,9 +12,11 @@ namespace DiningRoomWebApplication
         }
 
         public int Id { get; set; }
+
         [Required(ErrorMessage = "Поле не повинно бути порожнім")]
         [Display(Name = "Меню")]
         public string? Name { get; set; }
+
         public virtual ICollection<MenuInclude> MenuIncludes { get; set; }
     }
 }

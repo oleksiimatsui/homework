@@ -1,16 +1,16 @@
-﻿@model DiningRoomWebApplication.Dish
+﻿@model DiningRoomWA.Dish
 
 @{
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<h1>Редагування страви</h1>
 
-<h4>Dish</h4>
+<h4>Тут ви можете змінити деякі дані про страву</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit" asp-route-id=@Model?.Id>
+        <form asp-action="Edit">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Id" />
             <div class="form-group">
@@ -33,18 +33,15 @@
                 <select asp-for="TypeId" class="form-control" asp-items="ViewBag.TypeId"></select>
                 <span asp-validation-for="TypeId" class="text-danger"></span>
             </div>
-
-            <input type="hidden" value="@ViewBag.MenuId" name="MenuId"/>
-
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Зберегти зміни" class="btn btn-primary" />
             </div>
         </form>
     </div>
 </div>
 
 <div>
-     <a asp-action="Index" asp-route-id="@ViewBag.MenuId">Back to List</a>
+    <a asp-action="Index">Повернутись до страв</a>
 </div>
 
 @section Scripts {
